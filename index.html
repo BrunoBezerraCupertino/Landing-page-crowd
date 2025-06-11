@@ -1,25 +1,103 @@
-<!-- 
-    ================================================================
-    ARQUIVO: index.html (Página Principal)
-    INSTRUÇÃO: Salve este bloco de código como 'index.html'
-    ================================================================
--->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma CrowdStrike Falcon - Visão Técnica</title>
+    <title>Plataforma CrowdStrike Falcon - Visão Híbrida</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #1a1a1a; color: #f0f0f0; }
         .cs-red { color: #ff0000; }
-        .bg-cs-dark { background-color: #252525; }
-        .module-card { height: 100%; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #444; }
-        .module-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(255, 0, 0, 0.1), 0 10px 10px -5px rgba(255, 0, 0, 0.08); border-color: #ff0000; }
+        .section-divider { border-top: 1px solid #444; }
+        .bullet-point {
+            position: relative;
+            padding-left: 1.5rem;
+            text-align: left;
+        }
+        .bullet-point::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            top: -2px;
+            color: #ff0000;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        #slideshow-section {
+            position: relative;
+            width: 100%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 8rem; /* Space for nav buttons */
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            min-height: 70vh;
+            padding: 2rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #1a1a1a;
+            box-sizing: border-box;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+        .nav-button-container {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10;
+        }
+        .nav-button {
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .nav-button:hover {
+            background-color: rgba(255, 0, 0, 1);
+        }
+        #slideCounter {
+            background-color: #252525;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        .metric-chart-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        .mandala-svg text{font-family:"neue-haas-grotesk-display", sans-serif !important;}
+        .mandala-svg .cls-1{font-size:40px}.mandala-svg .cls-1,.mandala-svg .cls-10,.mandala-svg .cls-11,.mandala-svg .cls-2,.mandala-svg .cls-3,.mandala-svg .cls-4,.mandala-svg .cls-5,.mandala-svg .cls-6,.mandala-svg .cls-7,.mandala-svg .cls-8,.mandala-svg .cls-9{fill:#fff}.mandala-svg .cls-1,.mandala-svg .cls-7{font-family:HaasGrotDisp-55Roman,'Haas Grot Disp'}.mandala-svg .cls-2{font-size:44px}.mandala-svg .cls-10,.mandala-svg .cls-11,.mandala-svg .cls-2,.mandala-svg .cls-3,.mandala-svg .cls-4,.mandala-svg .cls-5,.mandala-svg .cls-6,.mandala-svg .cls-8,.mandala-svg .cls-9{font-family:HaasGrotDisp-65Medium,'Haas Grot Disp';font-weight:500}.mandala-svg .cls-12{fill:#000}.mandala-svg .cls-12,.mandala-svg .cls-13{stroke-width:0}.cls-3{font-size:38px}.cls-4{font-size:28px}.cls-5{font-size:33.5px}.cls-6{font-size:67px}.cls-14{stroke:#666}.mandala-svg .cls-14,.mandala-svg .cls-15{fill:none}.mandala-svg .cls-14,.mandala-svg .cls-15,.mandala-svg .cls-16{stroke-miterlimit:10;stroke-width:6px}.cls-7{font-size:35px}.mandala-svg .cls-8{font-size:45px}.cls-9{font-size:49.54px}.cls-10{font-size:62px}.cls-13{fill:#fc0000}.mandala-svg .cls-15,.mandala-svg .cls-16{stroke:#fc0000}.mandala-svg .cls-11{font-size:50px}.mandala-svg .cls-16{fill:#6b0606}
     </style>
 </head>
 <body class="antialiased">
@@ -30,7 +108,7 @@
         </header>
 
         <section class="max-w-4xl mx-auto mb-16 text-left space-y-8">
-            <div>
+             <div>
                 <h2 class="text-2xl font-bold cs-red mb-3">O Consolidador de IA em Cibersegurança</h2>
                 <p class="text-gray-300">A plataforma CrowdStrike é o consolidador de IA em cibersegurança, construída com o propósito de parar violações. O revolucionário agente único e leve da plataforma coleta e integra dados de toda a empresa, incluindo endpoints, workloads na nuvem, identidades e fontes de terceiros. Ao unificar conjuntos de dados e organizações distintas, e construir IA conversacional e automação sobre isso, as equipes de segurança podem fazer qualquer pergunta a todos os dados e impulsionar a automação em todo o SOC para obter a velocidade necessária para vencer o adversário moderno.</p>
             </div>
@@ -44,7 +122,7 @@
             </div>
         </section>
 
-        <section id="platform-diagram" class="mb-20">
+<section id="platform-diagram" class="mb-20">
             <div class="max-w-4xl mx-auto bg-black rounded-lg shadow-2xl p-4">
                 
                    <p style="color: ; border-color: "><style>text{font-family:"neue-haas-grotesk-display", sans-serif !important;}main.main>section.hero.standard:nth-of-type(3){padding-bottom:0!important}.cls-1{letter-spacing:-.01em}.cls-2{letter-spacing:-.01em}.cls-3{font-family:HaasGrotDisp-45Light,'Haas Grot Disp';font-size:13px;font-weight:300}.cls-10,.cls-11,.cls-3,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8,.cls-9{fill:#fff}.cls-12{stroke:#f00000}.cls-12,.cls-13,.cls-14,.cls-15,.cls-16,.cls-17{fill:none}.cls-12,.cls-15{stroke-linejoin:round}.cls-18{clip-path:url(#clippath)}.cls-11,.cls-13,.cls-19,.cls-20,.cls-21,.cls-22,.cls-23,.cls-24,.cls-25,.cls-26,.cls-6{stroke-width:0}.cls-27{letter-spacing:-.02em}.cls-28{letter-spacing:0}.cls-4{font-size:14px}.cls-4,.cls-5,.cls-8,.cls-9{font-family:HaasGrotDisp-65Medium,'Haas Grot Disp';font-weight:500}.cls-14{stroke:red}.cls-14,.cls-16,.cls-17{stroke-miterlimit:8}.cls-14,.cls-17{stroke-width:1.5px}.cls-29{letter-spacing:0}.cls-30{clip-path:url(#clippath-1)}.cls-31{clip-path:url(#clippath-4)}.cls-32{clip-path:url(#clippath-3)}.cls-33{clip-path:url(#clippath-2)}.cls-34{clip-path:url(#clippath-7)}.cls-35{clip-path:url(#clippath-8)}.cls-36{clip-path:url(#clippath-6)}.cls-37{clip-path:url(#clippath-5)}.cls-38{clip-path:url(#clippath-9)}.cls-5{font-size:21.93px}.cls-15{stroke-width:.75px}.cls-15,.cls-16,.cls-17{stroke:#fff}.cls-39{clip-path:url(#clippath-10)}.cls-40{clip-path:url(#clippath-11)}.cls-41{letter-spacing:0}.cls-42{letter-spacing:0}.cls-19{fill:#404040;opacity:.5}.cls-20{fill:#a10000;opacity:.49}.cls-16{stroke-width:.72px}.cls-6{fill-rule:evenodd}.cls-7{font-family:HaasGrotDisp-55Roman,'Haas Grot Disp';font-size:15px}.cls-43{letter-spacing:0}.cls-44{letter-spacing:-.02em}.cls-45{letter-spacing:-.01em}.cls-46{letter-spacing:0}.cls-47{letter-spacing:0}.cls-8{font-size:16px}.cls-9{font-size:18.05px}.cls-10{font-family:HaasGrotDisp-75Bold,'Haas Grot Disp';font-size:23px;font-weight:700}.cls-22{opacity:.29}.cls-22,.cls-23{fill:#262626}.cls-24{fill:#0d0d0d}.cls-25{fill:#231f20}.cls-26{fill:#f00000}.cls-17{opacity:.4}.cls-48{letter-spacing:0}</style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 1685">
@@ -876,453 +954,271 @@
 
             </div>
         </section>
-        
-       
-        <main class="space-y-16">
+
+
+
+        <div class="section-divider my-16"></div>
+        <h2 class="text-center text-4xl font-bold mb-8 uppercase">Módulos da Plataforma</h2>
+
+        <section id="slideshow-section">
+            <div id="slideshow-container">
+                <!-- Slides serão inseridos aqui pelo JS -->
+            </div>
+            <div class="nav-button-container">
+                <button id="prevBtn" class="nav-button">‹</button>
+                <div id="slideCounter" class="text-white"></div>
+                <button id="nextBtn" class="nav-button">›</button>
+            </div>
+        </section>
+    </div>
+    
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modulesData = [
+                
+
+                   
+                {
+                    title: "Endpoint Security",
+                    subtitle: "O líder em segurança de endpoints.",
+                    description: "A CrowdStrike é LÍDER em segurança de endpoints moderna pelo quinto ano consecutivo. Somos pioneiros em EDR e entregamos visibilidade abrangente e proteção nativa de IA, tudo através do nosso agente leve e unificado.",
+                    metrics: [
+                        { value: "100%", label: "Precisão Total (SE Labs)", chartId: "ep-metric1", chartData: [100, 0] },
+                        { value: "95%", label: "Redução no tempo de triagem", chartId: "ep-metric2", chartData: [95, 5] },
+                        { value: "100%", label: "Proteção contra Ransomware", chartId: "ep-metric3", chartData: [100, 0] },
+                    ]
+                },
+                {
+                    title: "Identity Protection",
+                    subtitle: "Pare ataques baseados em identidade em tempo real.",
+                    bullets: [
+                        "Plataforma Unificada: Um agente e um console para proteção de identidade e endpoint.",
+                        "Visibilidade Completa: Protege identidades em ambientes híbridos (AD, Entra ID, Okta).",
+                        "Detecção por IA: Encontra ataques furtivos com análise de comportamento do usuário.",
+                        "Desative Adversários: Bloqueia ataques de identidade na camada de autenticação ou no endpoint.",
+                    ],
+                    metrics: [
+                        { value: "$1.26M", label: "em Benefícios Tangíveis" },
+                        { value: "85%", label: "de Detecção Mais Rápida", chartId: "id-metric2", chartData: [85, 15] },
+                        { value: "310%", label: "de Retorno sobre o Investimento", chartId: "id-metric3", chartData: [77.5, 22.5] },
+                    ]
+                },
+                 {
+                    title: "Falcon Shield",
+                    subtitle: "Líder em segurança de SaaS",
+                    bullets: [
+                        "Insights Instantâneos de SaaS: Detecta rapidamente misconfigurations e ajuda a aplicar governança em minutos.",
+                        "Abrangência e Profundidade: A única solução SSPM com mais de 150 integrações prontas para uso.",
+                        "Previna Ataques de Identidade: Protege identidades humanas e de máquina em toda a sua pilha de aplicações SaaS.",
+                        "Remediação Automatizada: Revoga acesso de usuários de risco e executa playbooks Falcon.",
+                    ],
+                    metrics: [
+                        { value: "5,000+", label: "Verificações de segurança integradas" },
+                        { value: "201%", label: "Retorno sobre o Investimento", chartId: "saas-metric2", chartData: [67, 33] },
+                        { value: "150+", label: "Aplicações SaaS integradas" },
+                    ]
+                },
+                {
+                    title: "Cloud Security",
+                    subtitle: "A plataforma CNAPP mais completa.",
+                    bullets: [
+                        "CNAPP mais Completo: A única plataforma unificada com e sem agente para proteção do código à nuvem.",
+                        "Visibilidade Unificada na Nuvem: Descubra todos os ativos, da infraestrutura à aplicação, para priorizar riscos.",
+                        "Pare Violações na Nuvem: Detenha adversários com o apoio da inteligência de ameaças líder.",
+                        "Segurança Gerenciada para Nuvem: O único CNAPP com MDR 24/7, threat hunting e serviços de especialistas.",
+                    ],
+                    metrics: [
+                        { value: "89%", label: "Detecção e resposta mais rápidas", chartId: "cloud-metric1", chartData: [89, 11] },
+                        { value: "6 para 1", label: "Consolidação de consoles" },
+                        { value: "$380k", label: "Economia média por ano" },
+                    ]
+                },
+                {
+                    title: "Next-Gen SIEM",
+                    subtitle: "A plataforma SOC nativa de IA definitiva.",
+                    bullets: [
+                        "Cace os Adversários: Com detecções potencializadas por IA e desempenho ultrarrápido.",
+                        "Um Console, Um Agente, Uma Plataforma: Dados críticos já na plataforma, com fácil integração de terceiros.",
+                        "Reduza a Complexidade e os Custos: Unificando toda a detecção e resposta a ameaças.",
+                        "Automação Completa do Fluxo de Trabalho: Com capacidades SOAR nativas e Charlotte AI para agir mais rápido.",
+                    ],
+                     metrics: [
+                        { value: "150x", label: "Busca mais rápida que SIEMs legados" },
+                        { value: "1PB/dia", label: "Escalabilidade" },
+                        { value: "Até 80%", label: "Economia de custos", chartId: "siem-metric3", chartData: [80, 20] },
+                    ]
+                },
+                {
+                    title: "Intelligence",
+                    subtitle: "Líder em inteligência de ameaças cibernéticas.",
+                     bullets: [
+                        "Operações Contra Adversários: Unifique inteligência de ameaças com caçadores de elite.",
+                        "Acelere a Resposta: Reduza as investigações de dias para minutos com automação.",
+                        "Pesquisa de Classe Mundial: Capacite sua equipe para moldar a estratégia de segurança.",
+                    ],
+                    metrics: [
+                        { value: "75%", label: "Redução no tempo de investigação", chartId: "intel-metric1", chartData: [75, 25] },
+                        { value: "95%", label: "Redução nos custos de pesquisa", chartId: "intel-metric2", chartData: [95, 5] },
+                        { value: "75%", label: "Redução no tempo gasto investigando", chartId: "intel-metric3", chartData: [75, 25] },
+                    ]
+                },
+                {
+                    title: "Exposure Management",
+                    subtitle: "Visibilidade completa da superfície de ataque.",
+                    bullets: [
+                        "Visibilidade Corporativa Ampla: Veja e identifique todos os ativos de dentro para fora e de fora para dentro.",
+                        "Insights de Exposição em Tempo Real: Conheça cada fraqueza sem agentes ou scanners adicionais.",
+                        "Reduza o Risco de Intrusão: Obtenha visibilidade de potenciais caminhos de ataque para fechar vulnerabilidades.",
+                        "Resposta Baseada na Plataforma: Ações guiadas e automatizadas com RTR e integração SOAR nativa.",
+                    ],
+                    metrics: [
+                        { value: "$200k", label: "Economizados anualmente" },
+                        { value: "200%", label: "Priorização mais rápida de CVEs", chartId: "expo-metric2", chartData: [100, 0] },
+                        { value: "75%", label: "Redução na superfície de ataque", chartId: "expo-metric3", chartData: [75, 25] },
+                    ]
+                },
+                {
+                    title: "Data Protection",
+                    subtitle: "Visibilidade e proteção unificada de dados.",
+                     bullets: [
+                        "Proteção Instantânea de Dados: Implantação sem reinicializações com valor imediato.",
+                        "Elimine Pontos Cegos: Console unificado para visibilidade contextual completa.",
+                        "Pare Violações em Tempo Real: Previna o roubo de informações sensíveis.",
+                    ],
+                    metrics: [
+                        { value: "8x", label: "Resposta mais rápida à perda de dados", chartId: "data-metric1", type: 'bar', chartData: [8, 1], labels: ['Antes', 'Depois'] },
+                        { value: "100+", label: "Horas/mês economizadas" },
+                        { value: "$400K", label: "Economizados em 3 anos" },
+                    ]
+                },
+                {
+                    title: "IT Automation",
+                    subtitle: "O futuro da convergência entre Segurança e TI.",
+                    bullets: [
+                        "Pergunte: Visibilidade completa de todos os ativos com busca em linguagem natural.",
+                        "Responda: Entendimento instantâneo do estado de qualquer ativo para resolver problemas mais rápido.",
+                        "Aja: Quebre as barreiras entre TI e segurança com ações de resposta poderosas e automação integrada.",
+                    ]
+                },
+                 {
+                    title: "Charlotte AI",
+                    subtitle: "Acelere a cibersegurança e TI com IA generativa.",
+                    bullets: [
+                        "Economize Tempo: Transforme horas de trabalho em minutos com um assistente de SOC.",
+                        "Pergunte Naturalmente: Obtenha respostas rápidas para perguntas em linguagem simples.",
+                        "Eleve o Nível de Todos: Capacite todos os analistas, de novatos a especialistas.",
+                    ],
+                    metrics: [
+                        { value: "75%", label: "Mais rápido para responder perguntas", chartId: "ai-metric1", chartData: [75, 25] },
+                        { value: "40+ hrs", label: "Salvas por semana" },
+                        { value: "57%", label: "Mais rápido para escrever queries", chartId: "ai-metric3", chartData: [57, 43] },
+                    ]
+                },
+                {
+                    title: "Managed Services",
+                    subtitle: "Ajuda 24/7/365, pioneira em MDR.",
+                    bullets: [
+                        "Caça às Ameaças 24/7: Caça orientada por especialistas para táticas de ataque inovadoras.",
+                        "Resposta Abrangente a Incidentes: Responda, recupere e melhore proativamente suas defesas.",
+                        "Garantia de Prevenção de Violações: Pioneirismo em uma garantia sem burocracia.",
+                    ],
+                    metrics: [
+                        { value: "4 min", label: "MTTD Rápido no MITRE ATT&CK" },
+                        { value: "13 Milhões+", label: "Detecções resolvidas anualmente" },
+                        { value: "75%", label: "Redução no tempo de resposta (MTTR)", chartId: "ms-metric3", chartData: [75, 25] },
+                    ]
+                }
+            ];
+
+            const slideshowContainer = document.getElementById('slideshow-container');
+            const chartConfigs = {};
+
+            modulesData.forEach((module, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                if (index === 0) slide.classList.add('active');
+
+                let contentHTML = '';
+
+                if (module.type === 'mandala') {
+                    contentHTML = module.content;
+                } else {
+                    let bulletsHTML = '';
+                    if (module.bullets) {
+                        bulletsHTML = `<ul class="max-w-4xl text-lg text-left text-gray-300 space-y-3 mb-12">${module.bullets.map(b => `<li class="bullet-point">${b}</li>`).join('')}</ul>`;
+                    }
+                    
+                    let descriptionHTML = '';
+                    if (module.description) {
+                        descriptionHTML = `<p class="max-w-4xl text-lg text-gray-300 leading-relaxed mb-12">${module.description}</p>`;
+                    }
+
+                    let metricsHTML = '';
+                    if (module.metrics) {
+                        metricsHTML = `<div class="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">${module.metrics.map(m => {
+                            if (m.chartId) chartConfigs[m.chartId] = { type: m.type || 'doughnut', data: m.chartData, labels: m.labels || ['',''] };
+                            return `
+                                <div>
+                                    ${m.chartId ? `<div class="metric-chart-container"><canvas id="${m.chartId}"></canvas></div><p class="text-2xl font-bold mt-2">${m.value}</p>` : `<p class="text-5xl font-bold text-white">${m.value}</p>`}
+                                    <p class="text-gray-400">${m.label}</p>
+                                </div>
+                            `}).join('')}</div>`;
+                    }
+
+                    contentHTML = `
+                        <h2 class="text-5xl font-black cs-red uppercase mb-2">${module.title}</h2>
+                        <p class="text-xl text-gray-400 mb-8">${module.subtitle}</p>
+                        ${descriptionHTML}
+                        ${bulletsHTML}
+                        ${metricsHTML}
+                    `;
+                }
+                
+                slide.innerHTML = contentHTML;
+                slideshowContainer.appendChild(slide);
+            });
+
+
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            const slideCounter = document.getElementById('slideCounter');
             
-            <!-- Seção Endpoint Security -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Endpoint Security</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">O líder em segurança de endpoints</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12">
-                        <p class="text-gray-300 leading-relaxed">A CrowdStrike é LÍDER em segurança de endpoints moderna pelo quinto ano consecutivo. Somos pioneiros em EDR e entregamos visibilidade abrangente e proteção nativa de IA, enriquecendo petabytes de dados com inteligência de ameaças líder do setor. Nossa plataforma de dados moderna nos permite aplicar IA de ponta para avançar na detecção, investigação e resposta, tudo através do nosso agente leve e unificado que é implantado em minutos sem reinicializações. Nós paramos as violações. Não procure mais do que nosso desempenho no MITRE. Temos 100% de cobertura.</p>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">100%</p>
-                        <p class="text-gray-400 mt-1">Precisão Total SE Labs</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">95%</p>
-                        <p class="text-gray-400 mt-1">MTTR mais rápido, triagem reduzida</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">100%</p>
-                        <p class="text-gray-400 mt-1">Proteção contra Ransomware</p>
-                    </div>
-                </div>
-            </section>
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                    if (i === index) {
+                        renderChartForSlide(slide);
+                    }
+                });
+                slideCounter.textContent = `${index + 1} / ${slides.length}`;
+            }
+
+            function renderChartForSlide(slide) {
+                const canvases = slide.querySelectorAll('canvas');
+                canvases.forEach(canvas => {
+                    const chartId = canvas.id;
+                    if (chartConfigs[chartId] && !canvas.chart) {
+                        createChart(canvas, chartConfigs[chartId]);
+                    }
+                });
+            }
+
+            function createChart(canvas, config) {
+                 const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } };
+                if (config.type === 'bar') { chartOptions.scales = { y: { display: false, grid: { drawOnChartArea: false } }, x: { display: false, grid: { drawOnChartArea: false } } }; } 
+                else { chartOptions.cutout = '70%'; }
+                 canvas.chart = new Chart(canvas.getContext('2d'), {
+                    type: config.type, data: { labels: config.labels, datasets: [{ data: config.data, backgroundColor: ['#ff0000', '#444'], borderColor: '#1a1a1a', borderWidth: 2 }] }, options: chartOptions,
+                });
+            }
+
+            document.getElementById('nextBtn').addEventListener('click', () => { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); });
+            document.getElementById('prevBtn').addEventListener('click', () => { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); });
             
-            <div class="section-divider"></div>
-
-            <!-- Seção Identity Protection -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Identity Protection</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Pare ataques baseados em identidade em tempo real</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Plataforma Unificada</h4>
-                            <p class="text-gray-400">Um agente e um console para proteção de identidade e endpoint, com MDR 24/7 disponível.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Visibilidade Completa</h4>
-                            <p class="text-gray-400">Protege identidades em ambientes híbridos, do AD tradicional a provedores de nuvem como Entra ID e Okta.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Detecção Potencializada por IA</h4>
-                            <p class="text-gray-400">Encontra ataques furtivos com detecção de anomalias baseada em IA sobre o comportamento do usuário.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Desative Adversários</h4>
-                            <p class="text-gray-400">Bloqueia ataques de identidade na camada de autenticação ou no endpoint e aciona MFA baseado em risco.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">$1.26M</p>
-                        <p class="text-gray-400 mt-1">Benefícios tangíveis totais</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">85%</p>
-                        <p class="text-gray-400 mt-1">Detecção mais rápida de ataques de identidade</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">310%</p>
-                        <p class="text-gray-400 mt-1">Retorno sobre o Investimento</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-            
-            <!-- Seção SaaS Security -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Falcon Shield</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Líder em segurança de SaaS</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Insights Instantâneos de SaaS</h4>
-                            <p class="text-gray-400">Detecta rapidamente misconfigurations e ajuda a aplicar governança em minutos.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Abrangência e Profundidade</h4>
-                            <p class="text-gray-400">A única solução SSPM com mais de 150 integrações prontas para uso, garantindo cobertura profunda.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Previna Ataques de Identidade</h4>
-                            <p class="text-gray-400">Protege identidades humanas e de máquina em toda a sua pilha de aplicações SaaS.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Remediação Automatizada</h4>
-                            <p class="text-gray-400">Revoga acesso de usuários de risco, integra-se a sistemas de tickets e executa playbooks Falcon.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">5,000+</p>
-                        <p class="text-gray-400 mt-1">Verificações de segurança integradas</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">201%</p>
-                        <p class="text-gray-400 mt-1">Retorno sobre o Investimento</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">150+</p>
-                        <p class="text-gray-400 mt-1">Aplicações SaaS integradas</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-            
-            <!-- Seção Cloud Security -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Cloud Security</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">A plataforma CNAPP mais completa</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">CNAPP mais Completo</h4>
-                            <p class="text-gray-400">A única plataforma unificada com e sem agente para proteção do código à nuvem.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Visibilidade Unificada na Nuvem</h4>
-                            <p class="text-gray-400">Descubra todos os ativos na nuvem, da infraestrutura à aplicação, para priorizar riscos.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Pare Violações na Nuvem</h4>
-                            <p class="text-gray-400">Detenha adversários em todo o ambiente de nuvem, com o apoio da inteligência de ameaças líder do setor.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Segurança Gerenciada para Nuvem</h4>
-                            <p class="text-gray-400">O único CNAPP com MDR 24/7, threat hunting, RI e serviços de especialistas para a nuvem.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">89%</p>
-                        <p class="text-gray-400 mt-1">Detecção e resposta mais rápidas na nuvem</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">6 para 1</p>
-                        <p class="text-gray-400 mt-1">Consolidação de consoles</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">$380k</p>
-                        <p class="text-gray-400 mt-1">Economia média por ano</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-            
-            <!-- Seção Next-Gen SIEM -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Next-Gen SIEM</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">A plataforma SOC nativa de IA definitiva</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Cace os Adversários</h4>
-                            <p class="text-gray-400">Com detecções potencializadas por IA, inteligência de ameaças de classe mundial e desempenho ultrarrápido.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Um Console, Um Agente, Uma Plataforma</h4>
-                            <p class="text-gray-400">Todos os dados críticos já estão na plataforma, estendidos com a integração de dados de terceiros sem esforço.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Reduza a Complexidade e os Custos do SIEM</h4>
-                            <p class="text-gray-400">Unificando toda a detecção e resposta a ameaças em uma única plataforma nativa de IA entregue na nuvem.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Automação Completa do Fluxo de Trabalho</h4>
-                            <p class="text-gray-400">Com capacidades SOAR nativas e Charlotte AI para agir mais rápido.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">150x</p>
-                        <p class="text-gray-400 mt-1">Busca mais rápida que SIEMs legados</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">1PB/dia</p>
-                        <p class="text-gray-400 mt-1">Escalabilidade</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">Até 80%</p>
-                        <p class="text-gray-400 mt-1">Economia de custos</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-            
-            <!-- Seção Intelligence -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Intelligence</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Líder em inteligência de ameaças cibernéticas</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Operações Contra Adversários</h4>
-                            <p class="text-gray-400">Unifique a inteligência de ameaças com caçadores de elite para desarticular adversários.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Caça entre Domínios</h4>
-                            <p class="text-gray-400">Threat hunting gerenciado com IA em dados de endpoint, identidade e nuvem.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Acelere a Resposta</h4>
-                            <p class="text-gray-400">Reduza as investigações de dias para minutos com automação de inteligência integrada.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Pesquisa de Classe Mundial</h4>
-                            <p class="text-gray-400">Capacite o threat hunting, a engenharia de detecção, a resposta a incidentes e molde a estratégia de segurança.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">75%</p>
-                        <p class="text-gray-400 mt-1">Redução no tempo de investigação</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">95%</p>
-                        <p class="text-gray-400 mt-1">Redução nos custos de pesquisa</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">75%</p>
-                        <p class="text-gray-400 mt-1">Redução no tempo gasto investigando</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-            
-            <!-- Seção Exposure Management -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Exposure Management</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Visibilidade completa da superfície de ataque</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Visibilidade Corporativa Ampla</h4>
-                            <p class="text-gray-400">Veja e identifique todos os ativos de dentro para fora e de fora para dentro.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Insights de Exposição em Tempo Real</h4>
-                            <p class="text-gray-400">Conheça cada fraqueza sem a necessidade de agentes ou scanners adicionais.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Reduza o Risco de Intrusão</h4>
-                            <p class="text-gray-400">Obtenha visibilidade de potenciais caminhos de ataque para fechar vulnerabilidades proativamente.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Resposta Baseada na Plataforma</h4>
-                            <p class="text-gray-400">Ações guiadas e automatizadas com resposta em tempo real (RTR) e integração SOAR nativa.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">$200k</p>
-                        <p class="text-gray-400 mt-1">Economizados anualmente consolidando produtos</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">200%</p>
-                        <p class="text-gray-400 mt-1">Priorização mais rápida de CVEs com IA</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">75%</p>
-                        <p class="text-gray-400 mt-1">Redução na superfície de ataque externa</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-
-             <!-- Seção Data Protection -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Data Protection</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Visibilidade e proteção unificada de dados</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Proteção Instantânea de Dados</h4>
-                            <p class="text-gray-400">Implementa nos agentes existentes sem reinicializações, proporcionando valor imediato.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Elimine Pontos Cegos</h4>
-                            <p class="text-gray-400">Console unificado para visibilidade contextual completa em endpoints, identidades e dados.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Pare Violações em Tempo Real</h4>
-                            <p class="text-gray-400">Previna o roubo de informações sensíveis acompanhando o conteúdo mesmo quando ele se move entre arquivos.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">8x</p>
-                        <p class="text-gray-400 mt-1">Resposta mais rápida para detectar e parar perda de dados</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">100+</p>
-                        <p class="text-gray-400 mt-1">Horas/mês economizadas para implantar e operacionalizar</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">$400K</p>
-                        <p class="text-gray-400 mt-1">Economizados em 3 anos</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="section-divider"></div>
-
-            <!-- Seção IT Automation -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">IT Automation</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">O futuro da convergência entre Segurança e TI</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Pergunte</h4>
-                            <p class="text-gray-400">Visibilidade completa de endpoints, servidores e workloads na nuvem com busca em linguagem natural.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Responda</h4>
-                            <p class="text-gray-400">Entendimento instantâneo do estado de qualquer ativo para resolver problemas mais rápido com um único agente.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Aja</h4>
-                            <p class="text-gray-400">Quebre as barreiras entre TI e segurança com ações de resposta poderosas e automação integrada.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-             <div class="section-divider"></div>
-
-            <!-- Seção Charlotte AI -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Charlotte AI</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Acelere a cibersegurança e TI com workflows de IA generativa</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Economize Tempo</h4>
-                            <p class="text-gray-400">Transforme horas de trabalho em minutos ou segundos com um assistente de SOC potencializado por IA.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Pergunte Naturalmente</h4>
-                            <p class="text-gray-400">Obtenha respostas rápidas e acionáveis para perguntas em linguagem simples.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Automatize para Agir Mais Rápido</h4>
-                            <p class="text-gray-400">Acelere os tempos de resposta com fluxos de trabalho autônomos e agênticos.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Eleve o Nível de Todos</h4>
-                            <p class="text-gray-400">Capacite todos os analistas - de novatos a especialistas - para deter violações.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">75%</p>
-                        <p class="text-gray-400 mt-1">Mais rápido para responder perguntas sobre o ambiente</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">40+ hrs</p>
-                        <p class="text-gray-400 mt-1">Salvas por semana automatizando a triagem de detecção</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">57%</p>
-                        <p class="text-gray-400 mt-1">Mais rápido para escrever queries</p>
-                    </div>
-                </div>
-            </section>
-            
-            <div class="section-divider"></div>
-            
-            <!-- Seção Managed Services -->
-            <section class="py-8">
-                <div class="md:flex md:space-x-12">
-                    <div class="md:w-1/3 mb-8 md:mb-0">
-                        <h2 class="text-4xl lg:text-5xl font-black cs-red uppercase">Managed Services</h2>
-                        <h3 class="text-lg text-gray-300 mt-2">Ajuda 24/7/365, pioneira em MDR</h3>
-                    </div>
-                    <div class="md:w-2/3 md:border-l md:border-gray-700 md:pl-12 space-y-4">
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Caça às Ameaças 24/7</h4>
-                            <p class="text-gray-400">Caça orientada por especialistas para táticas de ataque inovadoras, projetadas para evadir a proteção padrão.</p>
-                        </div>
-                        <div class="bullet-point">
-                            <h4 class="font-bold text-white">Resposta Abrangente a Incidentes</h4>
-                            <p class="text-gray-400">Responda, recupere e melhore proativamente suas defesas em endpoint, nuvem, identidade e rede.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Prepare, Responda e Fortaleça</h4>
-                            <p class="text-gray-400">Prepare-se para responder a ameaças avançadas e fortaleça sua postura de cibersegurança.</p>
-                        </div>
-                         <div class="bullet-point">
-                            <h4 class="font-bold text-white">Garantia de Prevenção de Violações</h4>
-                            <p class="text-gray-400">A CrowdStrike foi pioneira em uma garantia de prevenção de violações sem burocracia.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 border-t border-gray-700 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p class="text-5xl font-bold cs-red">4 min</p>
-                        <p class="text-gray-400 mt-1">MTTD Rápido e cobertura abrangente no MITRE ATT&CK</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">13 Milhões+</p>
-                        <p class="text-gray-400 mt-1">Detecções resolvidas anualmente pelo Falcon Complete</p>
-                    </div>
-                    <div>
-                        <p class="text-5xl font-bold cs-red">75%</p>
-                        <p class="text-gray-400 mt-1">Redução no tempo médio de resposta (MTTR)</p>
-                    </div>
-                </div>
-            </section>
+            showSlide(0);
+        });
+    </script>
 </body>
 </html>
