@@ -3,54 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma CrowdStrike Falcon - Visão Híbrida</title>
+    <title>Visão Técnica da Plataforma de Cibersegurança - Betta Cyber</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #1a1a1a; color: #f0f0f0; }
-        .cs-red { color: #ff0000; }
-        .section-divider { border-top: 1px solid #444; }
-        .bullet-point {
-            position: relative;
-            padding-left: 1.5rem;
-            text-align: left;
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #f4f4f4;
+            color: #333; 
         }
-        .bullet-point::before {
-            content: '›';
-            position: absolute;
-            left: 0;
-            top: -2px;
-            color: #ff0000;
-            font-size: 1.5rem;
-            font-weight: bold;
+        .betta-header {
+            background-color: #1D2345;
+            padding: 1rem;
+        }
+        .betta-nav a {
+            color: white;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+        .betta-nav a:hover {
+            color: #8DC63F;
+        }
+        .betta-button-specialist {
+            background-color: #00AEEF;
+            color: white;
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+        .betta-button-specialist:hover {
+            background-color: #009ad6;
+        }
+        .betta-button-area {
+            color: white;
+            font-weight: 500;
+        }
+        .hero-section {
+            background: linear-gradient(to right, #6FA743, #78B833, #77D327);
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 2.75rem;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+        .betta-green { color: #6FA743; }
+        .betta-dark-text { color: #212529; }
+        .betta-dark-blue { color: #1D2345; }
+        .section-title {
+            font-weight: 900;
+            font-size: 2.5rem;
+            color: #212529;
+        }
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #555;
+        }
+        .betta-footer {
+            background-color: #1D2345;
+            color: white;
+            padding-top: 4rem;
+        }
+        .betta-footer .bottom {
+            background-color: #151a33;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        .info-bubble {
+            background-color: #fff;
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            height: 100%;
+        }
+        .info-bubble:hover {
+            background-color: #00AEEF;
+            transform: translateY(-5px);
+        }
+        .info-bubble h3 {
+            color: #1D2345;
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease-in-out;
+        }
+        .info-bubble p {
+            color: #555;
+            transition: color 0.3s ease-in-out;
+            line-height: 1.6;
+        }
+        .info-bubble:hover h3,
+        .info-bubble:hover p {
+            color: white;
         }
         #slideshow-section {
             position: relative;
             width: 100%;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 8rem; /* Space for nav buttons */
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 1rem;
+            padding: 2rem 0 8rem 0;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .slide {
             display: none;
-            width: 100%;
-            height: 100%;
-            min-height: 70vh;
-            padding: 2rem;
+            min-height: 500px;
+            padding: 2rem 4rem;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background-color: #1a1a1a;
             box-sizing: border-box;
             transition: opacity 0.5s ease-in-out;
             opacity: 0;
+            width: 100%;
         }
         .slide.active {
             display: flex;
@@ -68,7 +143,7 @@
             z-index: 10;
         }
         .nav-button {
-            background-color: rgba(255, 0, 0, 0.7);
+            background-color: #1D2345;
             color: white;
             border: none;
             padding: 1rem;
@@ -83,49 +158,105 @@
             transition: background-color 0.2s;
         }
         .nav-button:hover {
-            background-color: rgba(255, 0, 0, 1);
+            background-color: #00AEEF;
         }
         #slideCounter {
-            background-color: #252525;
+            color: #555;
+            font-weight: 700;
             padding: 0.5rem 1rem;
             border-radius: 8px;
             font-size: 0.875rem;
+        }
+        .slide-metric-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1D2345;
+        }
+        .slide-metric-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .slide-bullet-point {
+            text-align: left;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.75rem;
+        }
+         .slide-bullet-point::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: #8DC63F;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .slide-bullet-point h4 {
+            color: #1D2345;
+            font-weight: 700;
+        }
+        .slide-bullet-point p {
+            color: #555;
         }
         .metric-chart-container {
             width: 120px;
             height: 120px;
             margin: 0 auto;
         }
-        .mandala-svg text{font-family:"neue-haas-grotesk-display", sans-serif !important;}
-        .mandala-svg .cls-1{font-size:40px}.mandala-svg .cls-1,.mandala-svg .cls-10,.mandala-svg .cls-11,.mandala-svg .cls-2,.mandala-svg .cls-3,.mandala-svg .cls-4,.mandala-svg .cls-5,.mandala-svg .cls-6,.mandala-svg .cls-7,.mandala-svg .cls-8,.mandala-svg .cls-9{fill:#fff}.mandala-svg .cls-1,.mandala-svg .cls-7{font-family:HaasGrotDisp-55Roman,'Haas Grot Disp'}.mandala-svg .cls-2{font-size:44px}.mandala-svg .cls-10,.mandala-svg .cls-11,.mandala-svg .cls-2,.mandala-svg .cls-3,.mandala-svg .cls-4,.mandala-svg .cls-5,.mandala-svg .cls-6,.mandala-svg .cls-8,.mandala-svg .cls-9{font-family:HaasGrotDisp-65Medium,'Haas Grot Disp';font-weight:500}.mandala-svg .cls-12{fill:#000}.mandala-svg .cls-12,.mandala-svg .cls-13{stroke-width:0}.cls-3{font-size:38px}.cls-4{font-size:28px}.cls-5{font-size:33.5px}.cls-6{font-size:67px}.cls-14{stroke:#666}.mandala-svg .cls-14,.mandala-svg .cls-15{fill:none}.mandala-svg .cls-14,.mandala-svg .cls-15,.mandala-svg .cls-16{stroke-miterlimit:10;stroke-width:6px}.cls-7{font-size:35px}.mandala-svg .cls-8{font-size:45px}.cls-9{font-size:49.54px}.cls-10{font-size:62px}.cls-13{fill:#fc0000}.mandala-svg .cls-15,.mandala-svg .cls-16{stroke:#fc0000}.mandala-svg .cls-11{font-size:50px}.mandala-svg .cls-16{fill:#6b0606}
     </style>
 </head>
 <body class="antialiased">
+    <header class="betta-header sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center px-4">
+             <a href="#"><img src="https://betta.gp/wp-content/themes/theme-betta/img/betta-gp.svg" alt="Betta GP Logo" class="h-8"></a>
+             <nav class="hidden lg:flex items-center space-x-6 betta-nav">
+                <a href="#">Soluções</a>
+                <a href="#">Sobre nós</a>
+                <a href="#">Cases</a>
+                <a href="#">Blog</a>
+                <a href="#">Contato</a>
+             </nav>
+             <div class="hidden lg:flex items-center space-x-6">
+                <a href="#" class="betta-button-area">Área do Cliente</a>
+                <a href="#" class="betta-button-specialist">Fale com um Especialista</a>
+             </div>
+             <div class="lg:hidden">
+                <button class="text-white text-3xl">&#9776;</button>
+             </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <h1>Proteja sua empresa<br>com soluções avançadas</h1>
+    </section>
+
     <div class="container mx-auto p-4 md:p-8">
-        <header class="text-center my-12">
-            <h1 class="text-3xl md:text-5xl font-black uppercase tracking-wider">Plataforma CrowdStrike Falcon</h1>
-            <p class="text-lg text-gray-400 mt-4 max-w-3xl mx-auto">Uma visão geral da arquitetura e dos módulos técnicos que compõem a solução de segurança unificada.</p>
+        <header class="text-center my-12 md:my-20">
+            <h1 class="section-title betta-dark-text uppercase">Plataforma de Cibersegurança</h1>
+            <p class="section-subtitle mt-4 max-w-3xl mx-auto">Uma visão geral da arquitetura e dos módulos técnicos que compõem a solução de segurança unificada.</p>
         </header>
 
-        <section class="max-w-4xl mx-auto mb-16 text-left space-y-8">
-             <div>
-                <h2 class="text-2xl font-bold cs-red mb-3">O Consolidador de IA em Cibersegurança</h2>
-                <p class="text-gray-300">A plataforma CrowdStrike é o consolidador de IA em cibersegurança, construída com o propósito de parar violações. O revolucionário agente único e leve da plataforma coleta e integra dados de toda a empresa, incluindo endpoints, workloads na nuvem, identidades e fontes de terceiros. Ao unificar conjuntos de dados e organizações distintas, e construir IA conversacional e automação sobre isso, as equipes de segurança podem fazer qualquer pergunta a todos os dados e impulsionar a automação em todo o SOC para obter a velocidade necessária para vencer o adversário moderno.</p>
+        <section class="max-w-6xl mx-auto mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="info-bubble">
+                    <h3>O Consolidador de IA em Cibersegurança</h3>
+                    <p>A plataforma é o consolidador de IA em cibersegurança, construída com o propósito de parar violações. O revolucionário agente único e leve da plataforma coleta e integra dados de toda a empresa, incluindo endpoints, workloads na nuvem, identidades e fontes de terceiros. Ao unificar conjuntos de dados e organizações distintas, e construir IA conversacional e automação sobre isso, as equipes de segurança podem fazer qualquer pergunta a todos os dados e impulsionar a automação em todo o SOC para obter a velocidade necessária para vencer o adversário moderno.</p>
+                </div>
+                <div class="info-bubble">
+                    <h3>Arquitetura Nativa em IA</h3>
+                    <p>Potencializada pelos dados mais profundos e de mais alta fidelidade do mundo, a arquitetura nativa em IA é projetada para encontrar os ataques mais sofisticados. Os dados são enriquecidos com inteligência de ameaças e expertise humana líderes do setor, alimentando o machine learning no endpoint e na nuvem para prevenir ataques em tempo real.</p>
+                </div>
             </div>
-             <div>
-                <h2 class="text-2xl font-bold cs-red mb-3">Arquitetura Nativa em IA</h2>
-                <p class="text-gray-300">Potencializada pelos dados mais profundos e de mais alta fidelidade do mundo, a arquitetura nativa em IA da CrowdStrike é projetada para encontrar os ataques mais sofisticados. Os dados são enriquecidos com inteligência de ameaças e expertise humana líderes do setor, alimentando o machine learning no endpoint e na nuvem para prevenir ataques em tempo real. Estendida com análise comportamental pioneira para encontrar ameaças furtivas, a IA é aplicada a todos os aspectos da plataforma, incluindo a priorização inteligente de riscos com ExPRT.AI para gerenciamento de vulnerabilidades.</p>
-            </div>
-             <div>
-                <h2 class="text-2xl font-bold cs-red mb-3">Automação de Fluxo de Trabalho</h2>
-                <p class="text-gray-300">A CrowdStrike entrega a automação de fluxo de trabalho necessária para deter os adversários modernos. Construa seus próprios fluxos com o Falcon Fusion SOAR para automatizar tarefas manuais. Estenda a plataforma com aplicativos de baixo código construídos por clientes e parceiros. Utilize IA conversacional para iniciar a automação a partir de perguntas em linguagem simples e integre um vasto ecossistema de parceiros através do CrowdStrike Marketplace.</p>
+            <div class="grid">
+                <div class="info-bubble">
+                    <h3>Automação de Fluxo de Trabalho</h3>
+                    <p>Entrega a automação de fluxo de trabalho necessária para deter os adversários modernos. Construa seus próprios fluxos com o SOAR nativo para automatizar tarefas manuais. Estenda a plataforma com aplicativos de baixo código e utilize IA conversacional para iniciar a automação a partir de perguntas em linguagem simples.</p>
+                </div>
             </div>
         </section>
 
-<section id="platform-diagram" class="mb-20">
-            <div class="max-w-4xl mx-auto bg-black rounded-lg shadow-2xl p-4">
-                
-                   <p style="color: ; border-color: "><style>text{font-family:"neue-haas-grotesk-display", sans-serif !important;}main.main>section.hero.standard:nth-of-type(3){padding-bottom:0!important}.cls-1{letter-spacing:-.01em}.cls-2{letter-spacing:-.01em}.cls-3{font-family:HaasGrotDisp-45Light,'Haas Grot Disp';font-size:13px;font-weight:300}.cls-10,.cls-11,.cls-3,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8,.cls-9{fill:#fff}.cls-12{stroke:#f00000}.cls-12,.cls-13,.cls-14,.cls-15,.cls-16,.cls-17{fill:none}.cls-12,.cls-15{stroke-linejoin:round}.cls-18{clip-path:url(#clippath)}.cls-11,.cls-13,.cls-19,.cls-20,.cls-21,.cls-22,.cls-23,.cls-24,.cls-25,.cls-26,.cls-6{stroke-width:0}.cls-27{letter-spacing:-.02em}.cls-28{letter-spacing:0}.cls-4{font-size:14px}.cls-4,.cls-5,.cls-8,.cls-9{font-family:HaasGrotDisp-65Medium,'Haas Grot Disp';font-weight:500}.cls-14{stroke:red}.cls-14,.cls-16,.cls-17{stroke-miterlimit:8}.cls-14,.cls-17{stroke-width:1.5px}.cls-29{letter-spacing:0}.cls-30{clip-path:url(#clippath-1)}.cls-31{clip-path:url(#clippath-4)}.cls-32{clip-path:url(#clippath-3)}.cls-33{clip-path:url(#clippath-2)}.cls-34{clip-path:url(#clippath-7)}.cls-35{clip-path:url(#clippath-8)}.cls-36{clip-path:url(#clippath-6)}.cls-37{clip-path:url(#clippath-5)}.cls-38{clip-path:url(#clippath-9)}.cls-5{font-size:21.93px}.cls-15{stroke-width:.75px}.cls-15,.cls-16,.cls-17{stroke:#fff}.cls-39{clip-path:url(#clippath-10)}.cls-40{clip-path:url(#clippath-11)}.cls-41{letter-spacing:0}.cls-42{letter-spacing:0}.cls-19{fill:#404040;opacity:.5}.cls-20{fill:#a10000;opacity:.49}.cls-16{stroke-width:.72px}.cls-6{fill-rule:evenodd}.cls-7{font-family:HaasGrotDisp-55Roman,'Haas Grot Disp';font-size:15px}.cls-43{letter-spacing:0}.cls-44{letter-spacing:-.02em}.cls-45{letter-spacing:-.01em}.cls-46{letter-spacing:0}.cls-47{letter-spacing:0}.cls-8{font-size:16px}.cls-9{font-size:18.05px}.cls-10{font-family:HaasGrotDisp-75Bold,'Haas Grot Disp';font-size:23px;font-weight:700}.cls-22{opacity:.29}.cls-22,.cls-23{fill:#262626}.cls-24{fill:#0d0d0d}.cls-25{fill:#231f20}.cls-26{fill:#f00000}.cls-17{opacity:.4}.cls-48{letter-spacing:0}</style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 1685">
+        <section class="max-w-6xl mx-auto mb-16">
+            <p style="color: ; border-color: "><style>text{font-family:"neue-haas-grotesk-display", sans-serif !important;}main.main>section.hero.standard:nth-of-type(3){padding-bottom:0!important}.cls-1{letter-spacing:-.01em}.cls-2{letter-spacing:-.01em}.cls-3{font-family:HaasGrotDisp-45Light,'Haas Grot Disp';font-size:13px;font-weight:300}.cls-10,.cls-11,.cls-3,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8,.cls-9{fill:#fff}.cls-12{stroke:#f00000}.cls-12,.cls-13,.cls-14,.cls-15,.cls-16,.cls-17{fill:none}.cls-12,.cls-15{stroke-linejoin:round}.cls-18{clip-path:url(#clippath)}.cls-11,.cls-13,.cls-19,.cls-20,.cls-21,.cls-22,.cls-23,.cls-24,.cls-25,.cls-26,.cls-6{stroke-width:0}.cls-27{letter-spacing:-.02em}.cls-28{letter-spacing:0}.cls-4{font-size:14px}.cls-4,.cls-5,.cls-8,.cls-9{font-family:HaasGrotDisp-65Medium,'Haas Grot Disp';font-weight:500}.cls-14{stroke:red}.cls-14,.cls-16,.cls-17{stroke-miterlimit:8}.cls-14,.cls-17{stroke-width:1.5px}.cls-29{letter-spacing:0}.cls-30{clip-path:url(#clippath-1)}.cls-31{clip-path:url(#clippath-4)}.cls-32{clip-path:url(#clippath-3)}.cls-33{clip-path:url(#clippath-2)}.cls-34{clip-path:url(#clippath-7)}.cls-35{clip-path:url(#clippath-8)}.cls-36{clip-path:url(#clippath-6)}.cls-37{clip-path:url(#clippath-5)}.cls-38{clip-path:url(#clippath-9)}.cls-5{font-size:21.93px}.cls-15{stroke-width:.75px}.cls-15,.cls-16,.cls-17{stroke:#fff}.cls-39{clip-path:url(#clippath-10)}.cls-40{clip-path:url(#clippath-11)}.cls-41{letter-spacing:0}.cls-42{letter-spacing:0}.cls-19{fill:#404040;opacity:.5}.cls-20{fill:#a10000;opacity:.49}.cls-16{stroke-width:.72px}.cls-6{fill-rule:evenodd}.cls-7{font-family:HaasGrotDisp-55Roman,'Haas Grot Disp';font-size:15px}.cls-43{letter-spacing:0}.cls-44{letter-spacing:-.02em}.cls-45{letter-spacing:-.01em}.cls-46{letter-spacing:0}.cls-47{letter-spacing:0}.cls-8{font-size:16px}.cls-9{font-size:18.05px}.cls-10{font-family:HaasGrotDisp-75Bold,'Haas Grot Disp';font-size:23px;font-weight:700}.cls-22{opacity:.29}.cls-22,.cls-23{fill:#262626}.cls-24{fill:#0d0d0d}.cls-25{fill:#231f20}.cls-26{fill:#f00000}.cls-17{opacity:.4}.cls-48{letter-spacing:0}</style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 1685">
 <defs><style>.cls-1{font-size:40px}.cls-1,.cls-10,.cls-11,.cls-2,.cls-3,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8,.cls-9{fill:#fff}.cls-1,.cls-7{font-family:HaasGrotDisp-55Roman,'Haas Grot Disp'}.cls-2{font-size:44px}.cls-10,.cls-11,.cls-2,.cls-3,.cls-4,.cls-5,.cls-6,.cls-8,.cls-9{font-family:HaasGrotDisp-65Medium,'Haas Grot Disp';font-weight:500}.cls-12{fill:#000}.cls-12,.cls-13{stroke-width:0}.cls-3{font-size:38px}.cls-4{font-size:28px}.cls-5{font-size:33.5px}.cls-6{font-size:67px}.cls-14{stroke:#666}.cls-14,.cls-15{fill:none}.cls-14,.cls-15,.cls-16{stroke-miterlimit:10;stroke-width:6px}.cls-17,.cls-18{letter-spacing:0}.cls-7{font-size:35px}.cls-8{font-size:45px}.cls-9{font-size:49.54px}.cls-10{font-size:62px}.cls-13{fill:#fc0000}.cls-19{letter-spacing:-.02em}.cls-15,.cls-16{stroke:#fc0000}.cls-11{font-size:50px}.cls-16{fill:#6b0606}</style></defs>
   <g id="Layer_6" data-name="Layer 6">
     <rect class="cls-12" width="3000" height="1686"></rect>
@@ -951,39 +1082,64 @@
     <text class="cls-2" transform="translate(2154.39 868.19) rotate(41.52)"><tspan x="0" y="0">	</tspan></text>
   </g>
 </svg></p>
-
-            </div>
+                
         </section>
 
-
-
-        <div class="section-divider my-16"></div>
-        <h2 class="text-center text-4xl font-bold mb-8 uppercase">Módulos da Plataforma</h2>
-
         <section id="slideshow-section">
-            <div id="slideshow-container">
+            <h2 class="text-center text-4xl font-bold mb-12 uppercase betta-dark-text">Módulos da Plataforma</h2>
+            <div id="slideshow-container" class="relative w-full h-full">
                 <!-- Slides serão inseridos aqui pelo JS -->
             </div>
             <div class="nav-button-container">
                 <button id="prevBtn" class="nav-button">‹</button>
-                <div id="slideCounter" class="text-white"></div>
+                <div id="slideCounter"></div>
                 <button id="nextBtn" class="nav-button">›</button>
             </div>
         </section>
-    </div>
-    
 
+    </div>
+
+    <footer class="betta-footer mt-20">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <a href="#"><img src="https://betta.gp/wp-content/themes/theme-betta/img/betta-gp-rodape.svg" alt="Betta GP Rodapé" class="h-10 mb-4"></a>
+                    <img src="https://betta.gp/wp-content/themes/theme-betta/img/logos-rodape.svg" alt="Logos Parceiros" class="mt-3">
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Soluções</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-betta-green transition-colors">Betta_tech</a></li>
+                        <li><a href="#" class="hover:text-betta-green transition-colors">Betta_cyber</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="font-bold text-lg mb-4">Contato</h3>
+                     <p>Rua Teodoro de Beaurepaire, 126<br>Ipiranga - São Paulo/SP<br>CEP: 04.279-030<br>TEL. +55 11. 5060-3888</p>
+                </div>
+            </div>
+             <div class="bottom mt-12">
+                <div class="container mx-auto text-center md:flex md:justify-between items-center">
+                    <div class="text-sm text-gray-400">
+                        <span>© 2025. Todos os direitos reservados.</span> |
+                        <a href="#" class="hover:text-betta-green">Politica de Privacidade</a>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-4 md:mt-0">
+                        <span>DPO: <a href="mailto:dpo@betta.gp" class="hover:text-betta-green">dpo@betta.gp</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modulesData = [
-                
-
-                   
                 {
                     title: "Endpoint Security",
                     subtitle: "O líder em segurança de endpoints.",
-                    description: "A CrowdStrike é LÍDER em segurança de endpoints moderna pelo quinto ano consecutivo. Somos pioneiros em EDR e entregamos visibilidade abrangente e proteção nativa de IA, tudo através do nosso agente leve e unificado.",
+                    description: "A CrowdStrike é LÍDER em segurança de endpoints moderna. Somos pioneiros em EDR e entregamos visibilidade abrangente e proteção nativa de IA, enriquecendo petabytes de dados com inteligência de ameaças líder do setor. Nossa plataforma de dados moderna nos permite aplicar IA de ponta para avançar na detecção, investigação e resposta, tudo através do nosso agente leve e unificado.",
                     metrics: [
                         { value: "100%", label: "Precisão Total (SE Labs)", chartId: "ep-metric1", chartData: [100, 0] },
                         { value: "95%", label: "Redução no tempo de triagem", chartId: "ep-metric2", chartData: [95, 5] },
@@ -992,12 +1148,12 @@
                 },
                 {
                     title: "Identity Protection",
-                    subtitle: "Pare ataques baseados em identidade em tempo real.",
+                    subtitle: "Pare ataques baseados em identidade.",
                     bullets: [
-                        "Plataforma Unificada: Um agente e um console para proteção de identidade e endpoint.",
-                        "Visibilidade Completa: Protege identidades em ambientes híbridos (AD, Entra ID, Okta).",
-                        "Detecção por IA: Encontra ataques furtivos com análise de comportamento do usuário.",
-                        "Desative Adversários: Bloqueia ataques de identidade na camada de autenticação ou no endpoint.",
+                        {title: "Plataforma Unificada", text: "Um agente e um console para proteção de identidade e endpoint, com MDR 24/7 disponível."},
+                        {title: "Visibilidade Completa", text: "Protege identidades em ambientes híbridos, do AD tradicional a provedores como Entra ID e Okta."},
+                        {title: "Detecção Potencializada por IA", text: "Encontra ataques furtivos com análise de comportamento do usuário."},
+                        {title: "Desative Adversários", text: "Bloqueia ataques de identidade na camada de autenticação ou no endpoint."},
                     ],
                     metrics: [
                         { value: "$1.26M", label: "em Benefícios Tangíveis" },
@@ -1005,14 +1161,14 @@
                         { value: "310%", label: "de Retorno sobre o Investimento", chartId: "id-metric3", chartData: [77.5, 22.5] },
                     ]
                 },
-                 {
+                {
                     title: "Falcon Shield",
                     subtitle: "Líder em segurança de SaaS",
                     bullets: [
-                        "Insights Instantâneos de SaaS: Detecta rapidamente misconfigurations e ajuda a aplicar governança em minutos.",
-                        "Abrangência e Profundidade: A única solução SSPM com mais de 150 integrações prontas para uso.",
-                        "Previna Ataques de Identidade: Protege identidades humanas e de máquina em toda a sua pilha de aplicações SaaS.",
-                        "Remediação Automatizada: Revoga acesso de usuários de risco e executa playbooks Falcon.",
+                        {title: "Insights Instantâneos de SaaS", text: "Detecta rapidamente misconfigurations e ajuda a aplicar governança em minutos."},
+                        {title: "Abrangência e Profundidade", text: "A única solução SSPM com mais de 150 integrações prontas para uso."},
+                        {title: "Previna Ataques de Identidade", text: "Protege identidades humanas e de máquina em toda a sua pilha de aplicações SaaS."},
+                        {title: "Remediação Automatizada", text: "Revoga acesso de usuários de risco e executa playbooks Falcon."},
                     ],
                     metrics: [
                         { value: "5,000+", label: "Verificações de segurança integradas" },
@@ -1024,25 +1180,25 @@
                     title: "Cloud Security",
                     subtitle: "A plataforma CNAPP mais completa.",
                     bullets: [
-                        "CNAPP mais Completo: A única plataforma unificada com e sem agente para proteção do código à nuvem.",
-                        "Visibilidade Unificada na Nuvem: Descubra todos os ativos, da infraestrutura à aplicação, para priorizar riscos.",
-                        "Pare Violações na Nuvem: Detenha adversários com o apoio da inteligência de ameaças líder.",
-                        "Segurança Gerenciada para Nuvem: O único CNAPP com MDR 24/7, threat hunting e serviços de especialistas.",
+                        {title: "CNAPP mais Completo", text: "A única plataforma unificada com e sem agente para proteção do código à nuvem."},
+                        {title: "Visibilidade Unificada", text: "Descubra todos os ativos, da infraestrutura à aplicação, para priorizar riscos."},
+                        {title: "Pare Violações na Nuvem", text: "Detenha adversários em todo o ambiente de nuvem."},
+                        {title: "Segurança Gerenciada", text: "O único CNAPP com MDR 24/7, threat hunting e serviços de especialistas."},
                     ],
                     metrics: [
-                        { value: "89%", label: "Detecção e resposta mais rápidas", chartId: "cloud-metric1", chartData: [89, 11] },
-                        { value: "6 para 1", label: "Consolidação de consoles" },
-                        { value: "$380k", label: "Economia média por ano" },
+                        { value: "89%", label: "Detecção e Resposta Mais Rápidas", chartId: "cloud-metric1", chartData: [89, 11] },
+                        { value: "6-para-1", label: "Consolidação de Consoles" },
+                        { value: "$380k", label: "Economia Média por Ano" },
                     ]
                 },
                 {
                     title: "Next-Gen SIEM",
                     subtitle: "A plataforma SOC nativa de IA definitiva.",
                     bullets: [
-                        "Cace os Adversários: Com detecções potencializadas por IA e desempenho ultrarrápido.",
-                        "Um Console, Um Agente, Uma Plataforma: Dados críticos já na plataforma, com fácil integração de terceiros.",
-                        "Reduza a Complexidade e os Custos: Unificando toda a detecção e resposta a ameaças.",
-                        "Automação Completa do Fluxo de Trabalho: Com capacidades SOAR nativas e Charlotte AI para agir mais rápido.",
+                        {title: "Cace os Adversários", text: "Com detecções potencializadas por IA e desempenho ultrarrápido."},
+                        {title: "Um Console, Um Agente", text: "Dados críticos já na plataforma, com fácil integração de terceiros."},
+                        {title: "Reduza a Complexidade e os Custos", text: "Unificando toda a detecção e resposta a ameaças."},
+                        {title: "Automação Completa", text: "Com capacidades SOAR nativas e Charlotte AI para agir mais rápido."},
                     ],
                      metrics: [
                         { value: "150x", label: "Busca mais rápida que SIEMs legados" },
@@ -1052,11 +1208,11 @@
                 },
                 {
                     title: "Intelligence",
-                    subtitle: "Líder em inteligência de ameaças cibernéticas.",
+                    subtitle: "Líder em inteligência de ameaças.",
                      bullets: [
-                        "Operações Contra Adversários: Unifique inteligência de ameaças com caçadores de elite.",
-                        "Acelere a Resposta: Reduza as investigações de dias para minutos com automação.",
-                        "Pesquisa de Classe Mundial: Capacite sua equipe para moldar a estratégia de segurança.",
+                        {title: "Operações Contra Adversários", text: "Unifique inteligência de ameaças com caçadores de elite para desarticular adversários."},
+                        {title: "Acelere a Resposta", text: "Reduza as investigações de dias para minutos com automação de inteligência integrada."},
+                        {title: "Pesquisa de Classe Mundial", text: "Capacite sua equipe para moldar a estratégia de segurança."},
                     ],
                     metrics: [
                         { value: "75%", label: "Redução no tempo de investigação", chartId: "intel-metric1", chartData: [75, 25] },
@@ -1068,10 +1224,9 @@
                     title: "Exposure Management",
                     subtitle: "Visibilidade completa da superfície de ataque.",
                     bullets: [
-                        "Visibilidade Corporativa Ampla: Veja e identifique todos os ativos de dentro para fora e de fora para dentro.",
-                        "Insights de Exposição em Tempo Real: Conheça cada fraqueza sem agentes ou scanners adicionais.",
-                        "Reduza o Risco de Intrusão: Obtenha visibilidade de potenciais caminhos de ataque para fechar vulnerabilidades.",
-                        "Resposta Baseada na Plataforma: Ações guiadas e automatizadas com RTR e integração SOAR nativa.",
+                        {title: "Visibilidade Corporativa Ampla", text: "Veja e identifique todos os ativos de dentro para fora e de fora para dentro."},
+                        {title: "Insights em Tempo Real", text: "Conheça cada fraqueza sem scanners ou agentes adicionais."},
+                        {title: "Reduza o Risco de Intrusão", text: "Obtenha visibilidade de potenciais caminhos de ataque para fechar vulnerabilidades."},
                     ],
                     metrics: [
                         { value: "$200k", label: "Economizados anualmente" },
@@ -1083,9 +1238,9 @@
                     title: "Data Protection",
                     subtitle: "Visibilidade e proteção unificada de dados.",
                      bullets: [
-                        "Proteção Instantânea de Dados: Implantação sem reinicializações com valor imediato.",
-                        "Elimine Pontos Cegos: Console unificado para visibilidade contextual completa.",
-                        "Pare Violações em Tempo Real: Previna o roubo de informações sensíveis.",
+                        {title: "Proteção Instantânea", text: "Implantação sem reinicializações com valor imediato."},
+                        {title: "Elimine Pontos Cegos", text: "Console unificado para visibilidade contextual completa."},
+                        {title: "Pare Violações em Tempo Real", text: "Previna o roubo de informações sensíveis."},
                     ],
                     metrics: [
                         { value: "8x", label: "Resposta mais rápida à perda de dados", chartId: "data-metric1", type: 'bar', chartData: [8, 1], labels: ['Antes', 'Depois'] },
@@ -1097,18 +1252,18 @@
                     title: "IT Automation",
                     subtitle: "O futuro da convergência entre Segurança e TI.",
                     bullets: [
-                        "Pergunte: Visibilidade completa de todos os ativos com busca em linguagem natural.",
-                        "Responda: Entendimento instantâneo do estado de qualquer ativo para resolver problemas mais rápido.",
-                        "Aja: Quebre as barreiras entre TI e segurança com ações de resposta poderosas e automação integrada.",
+                        {title: "Pergunte", text: "Visibilidade completa de todos os ativos com busca em linguagem natural."},
+                        {title: "Responda", text: "Entendimento instantâneo do estado de qualquer ativo para resolver problemas mais rápido."},
+                        {title: "Aja", text: "Quebre as barreiras entre TI e segurança com ações de resposta poderosas e automação."},
                     ]
                 },
                  {
                     title: "Charlotte AI",
                     subtitle: "Acelere a cibersegurança e TI com IA generativa.",
                     bullets: [
-                        "Economize Tempo: Transforme horas de trabalho em minutos com um assistente de SOC.",
-                        "Pergunte Naturalmente: Obtenha respostas rápidas para perguntas em linguagem simples.",
-                        "Eleve o Nível de Todos: Capacite todos os analistas, de novatos a especialistas.",
+                        {title: "Economize Tempo", text: "Transforme horas de trabalho em minutos com um assistente de SOC."},
+                        {title: "Pergunte Naturalmente", text: "Obtenha respostas rápidas para perguntas em linguagem simples."},
+                        {title: "Eleve o Nível de Todos", text: "Capacite todos os analistas, de novatos a especialistas."},
                     ],
                     metrics: [
                         { value: "75%", label: "Mais rápido para responder perguntas", chartId: "ai-metric1", chartData: [75, 25] },
@@ -1120,9 +1275,9 @@
                     title: "Managed Services",
                     subtitle: "Ajuda 24/7/365, pioneira em MDR.",
                     bullets: [
-                        "Caça às Ameaças 24/7: Caça orientada por especialistas para táticas de ataque inovadoras.",
-                        "Resposta Abrangente a Incidentes: Responda, recupere e melhore proativamente suas defesas.",
-                        "Garantia de Prevenção de Violações: Pioneirismo em uma garantia sem burocracia.",
+                        {title: "Caça às Ameaças 24/7", text: "Caça orientada por especialistas para táticas de ataque inovadoras."},
+                        {title: "Resposta Abrangente a Incidentes", text: "Responda, recupere e melhore proativamente suas defesas."},
+                        {title: "Garantia de Prevenção de Violações", text: "Pioneirismo em uma garantia sem burocracia."},
                     ],
                     metrics: [
                         { value: "4 min", label: "MTTD Rápido no MITRE ATT&CK" },
@@ -1135,48 +1290,46 @@
             const slideshowContainer = document.getElementById('slideshow-container');
             const chartConfigs = {};
 
-            modulesData.forEach((module, index) => {
+            modulesData.forEach(module => {
                 const slide = document.createElement('div');
                 slide.className = 'slide';
-                if (index === 0) slide.classList.add('active');
 
-                let contentHTML = '';
+                let descriptionHTML = module.description ? `<p class="text-gray-600 leading-relaxed">${module.description}</p>` : '';
+                let bulletsHTML = '';
+                if (module.bullets) {
+                     bulletsHTML = `<div class="space-y-4">${module.bullets.map(b => `
+                        <div class="slide-bullet-point">
+                            <h4 class="font-bold betta-dark-blue">${b.title}</h4>
+                            <p>${b.text}</p>
+                        </div>`).join('')}</div>`;
+                }
 
-                if (module.type === 'mandala') {
-                    contentHTML = module.content;
-                } else {
-                    let bulletsHTML = '';
-                    if (module.bullets) {
-                        bulletsHTML = `<ul class="max-w-4xl text-lg text-left text-gray-300 space-y-3 mb-12">${module.bullets.map(b => `<li class="bullet-point">${b}</li>`).join('')}</ul>`;
-                    }
-                    
-                    let descriptionHTML = '';
-                    if (module.description) {
-                        descriptionHTML = `<p class="max-w-4xl text-lg text-gray-300 leading-relaxed mb-12">${module.description}</p>`;
-                    }
-
-                    let metricsHTML = '';
-                    if (module.metrics) {
-                        metricsHTML = `<div class="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">${module.metrics.map(m => {
+                let metricsHTML = '';
+                if(module.metrics){
+                    metricsHTML = `<div class="mt-12 border-t border-gray-200 pt-8 w-full grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">${module.metrics.map(m => {
                             if (m.chartId) chartConfigs[m.chartId] = { type: m.type || 'doughnut', data: m.chartData, labels: m.labels || ['',''] };
                             return `
                                 <div>
-                                    ${m.chartId ? `<div class="metric-chart-container"><canvas id="${m.chartId}"></canvas></div><p class="text-2xl font-bold mt-2">${m.value}</p>` : `<p class="text-5xl font-bold text-white">${m.value}</p>`}
-                                    <p class="text-gray-400">${m.label}</p>
+                                    ${m.chartId ? `<div class="metric-chart-container"><canvas id="${m.chartId}"></canvas></div><p class="text-2xl font-bold mt-2 betta-dark-blue">${m.value}</p>` : `<p class="slide-metric-value">${m.value}</p>`}
+                                    <p class="slide-metric-label">${m.label}</p>
                                 </div>
                             `}).join('')}</div>`;
-                    }
-
-                    contentHTML = `
-                        <h2 class="text-5xl font-black cs-red uppercase mb-2">${module.title}</h2>
-                        <p class="text-xl text-gray-400 mb-8">${module.subtitle}</p>
-                        ${descriptionHTML}
-                        ${bulletsHTML}
-                        ${metricsHTML}
-                    `;
                 }
+
+                slide.innerHTML = `
+                    <div class="md:flex md:space-x-12 w-full max-w-6xl">
+                        <div class="md:w-1/3 mb-8 md:mb-0 text-left">
+                            <h2 class="text-4xl lg:text-5xl font-black betta-dark-blue uppercase">${module.title}</h2>
+                            <h3 class="text-lg text-gray-500 mt-2">${module.subtitle}</h3>
+                        </div>
+                        <div class="md:w-2/3 md:border-l-2 md:border-gray-200 md:pl-12">
+                            ${descriptionHTML}
+                            ${bulletsHTML}
+                        </div>
+                    </div>
+                    ${metricsHTML}
+                `;
                 
-                slide.innerHTML = contentHTML;
                 slideshowContainer.appendChild(slide);
             });
 
@@ -1210,7 +1363,7 @@
                 if (config.type === 'bar') { chartOptions.scales = { y: { display: false, grid: { drawOnChartArea: false } }, x: { display: false, grid: { drawOnChartArea: false } } }; } 
                 else { chartOptions.cutout = '70%'; }
                  canvas.chart = new Chart(canvas.getContext('2d'), {
-                    type: config.type, data: { labels: config.labels, datasets: [{ data: config.data, backgroundColor: ['#ff0000', '#444'], borderColor: '#1a1a1a', borderWidth: 2 }] }, options: chartOptions,
+                    type: config.type, data: { labels: config.labels, datasets: [{ data: config.data, backgroundColor: ['#1D2345', '#e5e7eb'], borderColor: '#ffffff', borderWidth: 4 }] }, options: chartOptions,
                 });
             }
 
